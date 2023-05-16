@@ -17,7 +17,6 @@ declare module 'knex/types/tables' {
       description: string
       is_on_diet: string
       created_at: string
-      days_sequence?: number
     }
   }
 }
