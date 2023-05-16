@@ -6,7 +6,7 @@ export async function up(knex: Knex): Promise<void> {
     t.string('user_id')
     t.string('name').notNullable()
     t.text('description').notNullable()
-    t.boolean('is_on_diet').defaultTo(false)
+    t.enu('is_on_diet', ['yes', 'no']).defaultTo('no')
     t.timestamp('created_at').defaultTo(knex.fn.now()).notNullable()
   })
 }
