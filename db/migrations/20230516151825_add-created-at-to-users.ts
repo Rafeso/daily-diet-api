@@ -6,6 +6,7 @@ export async function up(knex: Knex): Promise<void> {
       .defaultTo(knex.fn.now())
       .notNullable()
       .after('email')
+      .notNullable()
   })
 }
 
