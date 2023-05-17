@@ -30,6 +30,7 @@
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
     "sqlite3": "^5.1.6",
+    "supertest": "^6.3.3",
     "tsup": "^6.7.0",
     "tsx": "^3.12.7",
     "typescript": "^5.0.4",
