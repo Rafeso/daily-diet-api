@@ -103,4 +103,56 @@ export async function mealsRoutes(app: FastifyInstance) {
       return reply.status(202).send({ message: 'Successfully deleted meal!' })
     },
   )
+
+  app.get('/resume', { preHandler: checkSessionIdExists }, async (request) => {
+    const { sessionId } = request.cookies
+
+    const totalOfMeals = await knex('meals')
+      .where('user_id', sessionId)
+      .count('id', { as: 'total' })
+
+    const totalOnDiet = await knex('meals')
+      .where({
+        user_id: sessionId,
+        is_on_diet: 'yes',
+      })
+      .count('is_on_diet', { as: 'total' })
+
+    const totalOutDiet = await knex('meals')
+      .where({
+        user_id: sessionId,
+        is_on_diet: 'no',
+      })
+      .count('is_on_diet', { as: 'total' })
+
+    const allMeals = await knex('meals')
+      .where('user_id', sessionId)
+      .orderBy('created_at', 'desc')
+      .select()
+
+    const isOnDiet = allMeals.map((meal) => meal.is_on_diet)
+
+    const minSequence = 1
+    let count = 0
+    let bestSequence = 0
+
+    for (let i = 0; i < isOnDiet.length; i++) {
+      if (isOnDiet[i] === 'yes') {
+        count++
+      }
+
+      if (isOnDiet[i] === 'no') {
+        if (count >= minSequence && count > bestSequence) {
+          bestSequence = count
+        }
+        count = 0
+      }
+
+      if (count >= minSequence && count > bestSequence) {
+        bestSequence = count
+      }
+    }
+
+    return { totalOfMeals, totalOnDiet, totalOutDiet, allMeals, bestSequence }
+  })
 }
