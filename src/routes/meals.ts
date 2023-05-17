@@ -98,7 +98,13 @@ export async function mealsRoutes(app: FastifyInstance) {
 
       const { id } = getMealParamsSchema.parse(request.params)
 
-      await knex('meals').where({ id, user_id: sessionId }).del()
+      const deleteMeal = await knex('meals')
+        .where({ id, user_id: sessionId })
+        .del()
+
+      if (!deleteMeal) {
+        reply.status(404).send({ message: 'Meal not found!' })
+      }
 
       return reply.status(202).send({ message: 'Successfully deleted meal!' })
     },
