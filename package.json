@@ -8,7 +8,8 @@
     "knex": "node --no-warnings --loader tsx ./node_modules/knex/bin/cli.js",
     "lint": "eslint src --ext .ts --fix",
     "build": "tsup src --out-dir build",
-    "commit": "cz"
+    "commit": "cz",
+    "test": "vitest"
   },
   "lint-staged": {
     "src/**/*.ts": "eslint --fix"
