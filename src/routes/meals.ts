@@ -39,7 +39,7 @@ export async function mealsRoutes(app: FastifyInstance) {
 
     const meals = await knex('meals').where('user_id', sessionId).select()
 
-    return meals
+    return { meals }
   })
 
   app.get('/:id', { preHandler: checkSessionIdExists }, async (request) => {
